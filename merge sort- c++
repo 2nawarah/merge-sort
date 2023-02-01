@@ -1,0 +1,89 @@
+// C++ program for Merge Sort
+#include <iostream>
+using namespace std;
+
+void merge(int array[], int const left, int const mid,
+	int const right)
+{
+	auto const ArrayOne = mid - left + 1;
+	auto const ArrayTwo = right - mid;
+
+	
+	auto* leftArray = new int[ArrayOne],
+		* rightArray = new int[ArrayTwo];
+
+	for (auto i = 0; i < ArrayOne; i++)
+		leftArray[i] = array[left + i];
+	for (auto j = 0; j < ArrayTwo; j++)
+		rightArray[j] = array[mid + 1 + j];
+
+	auto indexOfArrayOne
+		= 0,
+		indexOfArrayTwo
+		= 0; 
+	int indexOfMergedArray
+		= left; 
+
+	
+	while (indexOfArrayOne < ArrayOne
+		&& indexOfArrayTwo < ArrayTwo) {
+		if (leftArray[indexOfArrayOne]
+			<= rightArray[indexOfArrayTwo]) {
+			array[indexOfMergedArray]
+				= leftArray[indexOfArrayOne];
+			indexOfArrayOne++;
+		}
+		else {
+			array[indexOfMergedArray]
+				= rightArray[indexOfArrayTwo];
+			indexOfArrayTwo++;
+		}
+		indexOfMergedArray++;
+	}
+	
+	while (indexOfArrayOne < ArrayOne) {
+		array[indexOfMergedArray]
+			= leftArray[indexOfArrayOne];
+		indexOfArrayOne++;
+		indexOfMergedArray++;
+	}
+	
+	while (indexOfArrayTwo < ArrayTwo) {
+		array[indexOfMergedArray]
+			= rightArray[indexOfArrayTwo];
+		indexOfArrayTwo++;
+		indexOfMergedArray++;
+	}
+	delete[] leftArray;
+	delete[] rightArray;
+}
+
+
+void mergeSort(int array[], int const first, int const end)
+{
+	if (first >= end)
+		return; 
+
+	auto mid = first + (end - first) / 2;
+	mergeSort(array, first, mid);
+	mergeSort(array, mid + 1, end);
+	merge(array, first, mid, end);
+}
+
+
+void printArray(int A[], int size)
+{
+	for (auto i = 0; i < size; i++)
+		cout << A[i] << " ";
+}
+
+
+int main()
+{
+	int array[] = { 80, 18, 19, 3, 4, 2 };
+	auto arraySize = sizeof(array) / sizeof(array[0]);
+
+	cout << " UN-sorted Array \n";
+	printArray(array, arraySize);
+
+	mergeSort(array, 0, arraySize - 1);
